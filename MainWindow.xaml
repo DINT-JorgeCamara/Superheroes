@@ -1,0 +1,69 @@
+﻿<Window x:Class="Superheroes.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Superheroes"
+        xmlns:convertidores="clr-namespace:Superheroes.Convertidores"
+        mc:Ignorable="d"
+        Title="Superhéroes" Height="600" Width="1000" MinHeight="500" MinWidth="700" Icon="Recursos/shield.ico">
+    <Window.Resources>
+        <convertidores:convertidorHeroe x:Key="convertidorHeroe"/>
+        <convertidores:convertidorOrganizacion x:Key="convertidorOrganizacion"/>
+
+        <Style TargetType="Image" x:Key="flechas">
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Source" Value="Recursos/arrow.png"/>
+            <EventSetter Event="MouseLeftButtonDown" Handler="Arrow_MouseLeftButtonDown"/>
+        </Style>
+        
+        <Style TargetType="Image" x:Key="organizacion">
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+        
+        <Style TargetType="TextBlock" x:Key="Nombre">
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="DockPanel.Dock" Value="Left"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <DockPanel x:Name="contenedor" Background="{Binding Path=Heroe, Converter={StaticResource convertidorHeroe}}">
+        <DockPanel LastChildFill="False" DockPanel.Dock="Top">
+            <TextBlock x:Name="Nombre" Text="{Binding Path=Nombre}" Style="{StaticResource Nombre}"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Image x:Name="OrganizacionX" Source="Recursos/xmen.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Xmen, Converter={StaticResource convertidorOrganizacion}}"/>
+                <Image x:Name="OrganizacionA" Source="Recursos/avengers.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Vengador, Converter={StaticResource convertidorOrganizacion}}"/>
+            </StackPanel>
+        </DockPanel>
+
+        <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="10">
+            <Image Tag="Atras" Style="{StaticResource flechas}"/>
+            <TextBlock x:Name="Posicion" FontWeight="Bold" FontSize="20"/>
+            <Image Tag="Delante" Style="{StaticResource flechas}" RenderTransformOrigin="0.5,0.5" >
+                <Image.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Image.RenderTransform>
+            </Image>
+        </WrapPanel>
+
+        <Image x:Name="Imagen" Stretch="UniformToFill" Margin="10" Source="{Binding Path=Imagen}"/>
+
+    </DockPanel>
+</Window>
