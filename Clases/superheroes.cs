@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace Superheroes.Clases
 {
-    internal class Superheroe : InotifyPropertyChange
+    internal class Superheroe : INotifyPropertyChanged
     {
         private bool heroe;
         private bool xmen;

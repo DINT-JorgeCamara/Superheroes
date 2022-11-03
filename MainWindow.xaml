@@ -39,18 +39,20 @@
         </Style>
     </Window.Resources>
 
-    <DockPanel x:Name="contenedor" Background="{Binding Path=Heroe, Converter={StaticResource convertidorHeroe}}">
+    <DockPanel x:Name="contenedor" Background="{Binding Path=Personaje.Heroe, Converter={StaticResource convertidorHeroe}}">
         <DockPanel LastChildFill="False" DockPanel.Dock="Top">
-            <TextBlock x:Name="Nombre" Text="{Binding Path=Nombre}" Style="{StaticResource Nombre}"/>
+            <TextBlock x:Name="Nombre" Text="{Binding Path=Personaje.Nombre}" Style="{StaticResource Nombre}"/>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <Image x:Name="OrganizacionX" Source="Recursos/xmen.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Xmen, Converter={StaticResource convertidorOrganizacion}}"/>
-                <Image x:Name="OrganizacionA" Source="Recursos/avengers.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Vengador, Converter={StaticResource convertidorOrganizacion}}"/>
+                <Image x:Name="OrganizacionX" Source="Recursos/xmen.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Personaje.Xmen, Converter={StaticResource convertidorOrganizacion}}"/>
+                <Image x:Name="OrganizacionA" Source="Recursos/avengers.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Personaje.Vengador, Converter={StaticResource convertidorOrganizacion}}"/>
             </StackPanel>
         </DockPanel>
 
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="10">
             <Image Tag="Atras" Style="{StaticResource flechas}"/>
-            <TextBlock x:Name="Posicion" FontWeight="Bold" FontSize="20"/>
+            <TextBlock Text="{Binding Path=Posicion}"/>
+            <TextBlock Text="/"/>
+            <TextBlock Text="{Binding Path=Total}"/>
             <Image Tag="Delante" Style="{StaticResource flechas}" RenderTransformOrigin="0.5,0.5" >
                 <Image.RenderTransform>
                     <TransformGroup>
@@ -63,7 +65,7 @@
             </Image>
         </WrapPanel>
 
-        <Image x:Name="Imagen" Stretch="UniformToFill" Margin="10" Source="{Binding Path=Imagen}"/>
+        <Image x:Name="Imagen" Stretch="UniformToFill" Margin="10" Source="{Binding Path=Personaje.Imagen}"/>
 
     </DockPanel>
 </Window>

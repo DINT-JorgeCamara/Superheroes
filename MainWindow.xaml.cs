@@ -1,4 +1,5 @@
 ﻿using Superheroes.Clases;
+using Superheroes.VistaModelo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,42 +22,21 @@ namespace Superheroes
     /// </summary>
     public partial class MainWindow : Window
     {
-        private int posPersonaje = 0;
-        List<Superheroe> personajes = Superheroe.GetSamples();
+        MainWindowVM vm = new MainWindowVM();
         public MainWindow()
         {
             InitializeComponent();
-
-            contenedor.DataContext = personajes[posPersonaje];
-            Posicion.Text = (posPersonaje + 1) + "/" + personajes.Count;
+            this.DataContext = vm;
         }
 
         private void Arrow_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Image flecha = (Image)sender;
-            try
+            if (flecha.Tag.ToString() == "Atras")
             {
-                if (flecha.Tag.ToString() == "Atras")
-                {
-                    if (posPersonaje > 0)
-                    {
-                        posPersonaje--;
-                        contenedor.DataContext = personajes[posPersonaje];
-                        Posicion.Text = (posPersonaje + 1) + "/" + personajes.Count;
-                    }
-                }
-                else
-                {
-                    if (posPersonaje < 3)
-                    {
-                        posPersonaje++;
-                        contenedor.DataContext = personajes[posPersonaje];
-                        Posicion.Text = (posPersonaje + 1) + "/" + personajes.Count;
-                    }
-                }
+                vm.Retroceder();
             }
-            catch (ArgumentOutOfRangeException) { }
-
+            else vm.Avanzar();
         }
     }
 }

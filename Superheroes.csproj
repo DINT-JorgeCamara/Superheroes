@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VistaModelo\MainWindowVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,7 +64,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Clases\InotifyPropertyChange.cs" />
     <Compile Include="Clases\superheroes.cs" />
     <Compile Include="Convertidores\convertidorHeroe.cs" />
     <Compile Include="Convertidores\convertidorOrganizacion.cs" />
