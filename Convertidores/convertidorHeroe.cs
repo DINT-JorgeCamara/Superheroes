@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 
 namespace Superheroes.Convertidores
-{
+{/*
     class convertidorHeroe : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -23,5 +23,5 @@ namespace Superheroes.Convertidores
         {
             throw new NotImplementedException();
         }
-    }
+    }*/
 }

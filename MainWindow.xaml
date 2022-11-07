@@ -8,25 +8,82 @@
         mc:Ignorable="d"
         Title="Superhéroes" Height="600" Width="1000" MinHeight="500" MinWidth="700" Icon="Recursos/shield.ico">
     <Window.Resources>
-        <convertidores:convertidorHeroe x:Key="convertidorHeroe"/>
         <convertidores:convertidorOrganizacion x:Key="convertidorOrganizacion"/>
-
-        <Style TargetType="Image" x:Key="flechas">
+        
+        <!-- Estilos de posicion personaje, total de personajes y las flechas de avanzar y retroceder-->
+        <Style TargetType="{x:Type TextBlock}" x:Key="textosGuia">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+        
+        <Style TargetType="{x:Type Image}" x:Key="flechas">
             <Setter Property="Height" Value="20"/>
             <Setter Property="Margin" Value="5,0"/>
             <Setter Property="Source" Value="Recursos/arrow.png"/>
             <EventSetter Event="MouseLeftButtonDown" Handler="Arrow_MouseLeftButtonDown"/>
         </Style>
-        
-        <Style TargetType="Image" x:Key="organizacion">
+
+        <!-- Estilo de la imagen del personaje -->
+        <Style TargetType="{x:Type Image}" x:Key="superheroe">
+            <Setter Property="Opacity" Value="0.5"/>
+            <Setter Property="Stretch" Value="UniformToFill"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo de fondo-->
+        <Style TargetType="{x:Type DockPanel}" x:Key="fondoHeroe">
+            <Setter Property="Background" Value="PaleGreen"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Heroe}" Value="false">
+                    <Setter Property="Background" Value="IndianRed"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo base de las organizaciones junto con su específico-->
+        <Style TargetType="{x:Type Image}" x:Key="organizaciones">
             <Setter Property="Height" Value="50"/>
             <Setter Property="Width" Value="50"/>
             <Setter Property="Margin" Value="10"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+        </Style>
+
+        <Style TargetType="{x:Type Image}" x:Key="organizacionVengador" BasedOn="{StaticResource organizaciones}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Vengador}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Image}" x:Key="organizacionXmen" BasedOn="{StaticResource organizaciones}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Path=Personaje.Xmen}" Value="True">
+                    <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
         
-        <Style TargetType="TextBlock" x:Key="Nombre">
+        <!-- Borde de la imagen-->
+        <Style TargetType="{x:Type Border}" x:Key="bordeSuperH">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=Imagen,Path=IsMouseOver}" Value="True">
+                    <Setter Property="BorderThickness" Value="5"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- Título con el nombre del personaje-->
+        <Style TargetType="{x:Type TextBlock}" x:Key="Nombre">
             <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontSize" Value="40"/>
             <Setter Property="Margin" Value="10"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Foreground" Value="White"/>
@@ -36,23 +93,40 @@
                     <DropShadowEffect/>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="70" Duration="0:0:3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize" To="40" Duration="0:0:3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+
         </Style>
     </Window.Resources>
 
-    <DockPanel x:Name="contenedor" Background="{Binding Path=Personaje.Heroe, Converter={StaticResource convertidorHeroe}}">
+    <DockPanel x:Name="contenedor" Style="{StaticResource fondoHeroe}">
         <DockPanel LastChildFill="False" DockPanel.Dock="Top">
             <TextBlock x:Name="Nombre" Text="{Binding Path=Personaje.Nombre}" Style="{StaticResource Nombre}"/>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <Image x:Name="OrganizacionX" Source="Recursos/xmen.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Personaje.Xmen, Converter={StaticResource convertidorOrganizacion}}"/>
-                <Image x:Name="OrganizacionA" Source="Recursos/avengers.png" Style="{StaticResource organizacion}" Visibility="{Binding Path=Personaje.Vengador, Converter={StaticResource convertidorOrganizacion}}"/>
+                <Image x:Name="OrganizacionX" Source="Recursos/xmen.png" Style="{StaticResource organizacionXmen}"/>
+                <Image x:Name="OrganizacionA" Source="Recursos/avengers.png" Style="{StaticResource organizacionVengador}" />
             </StackPanel>
         </DockPanel>
 
         <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="10">
             <Image Tag="Atras" Style="{StaticResource flechas}"/>
-            <TextBlock Text="{Binding Path=Posicion}"/>
-            <TextBlock Text="/"/>
-            <TextBlock Text="{Binding Path=Total}"/>
+            <TextBlock Style="{StaticResource textosGuia}" Text="{Binding Path=Posicion}"/>
+            <TextBlock Style="{StaticResource textosGuia}" Text="/"/>
+            <TextBlock Style="{StaticResource textosGuia}" Text="{Binding Path=Total}"/>
             <Image Tag="Delante" Style="{StaticResource flechas}" RenderTransformOrigin="0.5,0.5" >
                 <Image.RenderTransform>
                     <TransformGroup>
@@ -64,8 +138,9 @@
                 </Image.RenderTransform>
             </Image>
         </WrapPanel>
-
-        <Image x:Name="Imagen" Stretch="UniformToFill" Margin="10" Source="{Binding Path=Personaje.Imagen}"/>
+        <Border Style="{StaticResource bordeSuperH}">
+            <Image x:Name="Imagen" Style="{StaticResource superheroe}" Source="{Binding Path=Personaje.Imagen}"/>
+        </Border>
 
     </DockPanel>
 </Window>
